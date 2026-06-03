@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Client Appointment Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #response {
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <form id="appointmentForm">
+    <h2>Book Appointment</h2>
+    <label>Name:</label>
+    <input type="text" name="name" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Phone:</label>
+    <input type="text" name="phone">
+
+    <label>Date:</label>
+    <input type="date" name="appointment_date" required>
+
+    <label>Time:</label>
+    <input type="time" name="appointment_time" required>
+
+    <label>Message:</label>
+    <textarea name="message"></textarea>
+
+    <button type="submit">Book Now</button>
+    <div id="response"></div>
+  </form>
+
+  <script>
+    document.getElementById("appointmentForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      let formData = new FormData(this);
+
+      let response = await fetch("backend.php", {
+        method: "POST",
+        body: formData
+      });
+
+      let result = await response.json();
+      document.getElementById("response").innerText = result.message;
+      if (result.success) this.reset();
+    });
+  </script>
+</body>
+</html>
